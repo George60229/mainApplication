@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of users to block</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            color: #4285f4;
+            text-decoration: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            color: #333;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        form {
+            display: inline-block;
+        }
+
+        input[type="submit"] {
+            background-color: #4285f4;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #3b73af;
+        }
+    </style>
+</head>
+<body>
+<a href="/adminPage">Return</a>
+<h1>Users</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Town</th>
+        <th>Is Blocked</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user, rowStat : ${users}">
+        <td th:text="${user.login}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.popularTown}"></td>
+        <td th:text="${user.blocked}"></td>
+        <td>
+            <form id="blockForm_${rowStat.index}" method="post" th:action="@{/blockUser/{login}/{blocked}(login=${user.login}, blocked=${user.blocked})}">
+                <input hidden="hidden" type="text" id="login" name="login" required th:value="${user.login}">
+                <input hidden="hidden" type="text" id="block" name="block" required th:value="${user.blocked}">
+                <input type="submit" value="Change Block Status">
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
